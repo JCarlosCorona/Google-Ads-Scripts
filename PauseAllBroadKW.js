@@ -5,11 +5,11 @@
 * jcorona@epa.digital
 * based on: http://www.freeadwordsscripts.com/2012/11/pause-all-keywords-with-no-impressions.html
 **********************************************/
-var TO_NOTIFY = "your_email@epa.digital";
+var TO_NOTIFY = "correo@epa.digital";         // main email
+var CC = "correo1@epa.digital,correo2@epa.digital"    // cc emails comma separated
 function main() {
     var kwIter = AdsApp.keywords()
         .withCondition("KeywordMatchType = BROAD") // pause KW = broad
-        .withCondition("Text DOES_NOT_CONTAIN '+'")
         .forDateRange("ALL_TIME") // could use a specific date range like "20130101","20131231"
         .withCondition("Status = ENABLED")
         .withCondition("CampaignStatus = ENABLED")
@@ -31,7 +31,10 @@ function main() {
     }
 
     // Sent an email to notify you of the changes
-    MailApp.sendEmail(TO_NOTIFY,
-        "AdWords Script Paused " + toPause.length + " Keywords.",
-        "Your AdWords Script paused " + toPause.length + " keywords.");
+    MailApp.sendEmail({
+        to: TO_NOTIFY,
+        cc: CC,
+        subject: "AdWords Script Paused " + toPause.length + " Keywords.",
+        htmlBody: "Your AdWords Script paused " + toPause.length + " keywords.",
+    });
 }
